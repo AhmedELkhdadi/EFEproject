@@ -100,8 +100,8 @@
 
                                             <div class="col mr-2 justify-content-center">
                                                 <div align="center" style="margin:auto"
-                                                    class="text-lg font-weight-bold text-uppercase mb-1">Singn up as a
-                                                    Participant</div>
+                                                    class="text-lg font-weight-bold text-uppercase mb-1">Sign up as a
+                                                    Participantss ${path} </div>
                                                 <br>
                                                 <div class="h6 mb-0  text-gray-800">
                                                     <form method='post'  action='#'  class="row g-3">

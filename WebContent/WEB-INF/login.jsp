@@ -66,7 +66,7 @@
 
                     <div class="d-flex align-items-center p-3 my-3 text-white bg-primary rounded shadow justify-content-center">
                         <div class="lh-1">
-                             <h1 align="center" class="h6 mb-0 text-white lh-1">ENSAK FORUM ENTERPRISE</h1>
+                             <h1 align="center" class="h6 mb-0 text-white lh-1">ENSAK FORUM ENTERPRISE ${ pathhh }</h1>
                     <c:choose>
 	                            <c:when test="${ eventState == 0 }">
 	                            <h4 class="text-light"> Event starts in <b id="blockCountdown" class="text-dark" style="display:none"> ${ msUntillStart }</b> </h4>                            	

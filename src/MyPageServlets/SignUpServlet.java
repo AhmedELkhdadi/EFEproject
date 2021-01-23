@@ -48,7 +48,7 @@ public class SignUpServlet extends HttpServlet {
 		if(request.getParameter("signUp") != null)
 		{   
 			Participant participant  = new Participant();
-			participant.setLogin(request.getParameter("loginP")  );
+			participant.setLogin(request.getParameter("loginP"));
 			participant.setPassword(request.getParameter("passwordP"));
 			participant.setName(request.getParameter("nameP"));
 			participant.setFname(request.getParameter("fnameP"));
