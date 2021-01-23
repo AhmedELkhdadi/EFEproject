@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app 
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0"
+  xmlns:my="http://jakarta.apache.org/tomcat/jsp2-example-taglib">
+
+<servlet>
+   <servlet-name>UploadServlet</servlet-name>
+   <servlet-class>MyPageServlets.UploadServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+   <servlet-name>UploadServlet</servlet-name>
+   <url-pattern>/UploadServlet</url-pattern>
+</servlet-mapping>
+
+
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.css</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.js</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.jpg</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.png</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.jfif</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.otf</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.eot</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.svg</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.woff</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.woff2</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.ttf</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.pdf</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>default</servlet-name>
+	<url-pattern>*.docx</url-pattern>
+</servlet-mapping>
+
+
+<jsp-config>
+  <jsp-property-group>
+    <url-pattern>*.jsp</url-pattern>
+    <include-prelude>/WEB-INF/taglibs.jsp</include-prelude>
+  </jsp-property-group>
+</jsp-config>
+
+</web-app>
