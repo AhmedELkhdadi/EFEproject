@@ -1,8 +1,6 @@
 package MyPageServlets;
 
-
 import java.io.IOException;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;  
@@ -25,7 +23,7 @@ public class LoginServlet extends HttpServlet {
 		this.representativeDao= daoFactory.getRepresentative();
 		this.adminDao = daoFactory.getAdmin();
 	}
-
+		
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().invalidate();
 		ActivityDao.handleEventState(request);
@@ -34,9 +32,10 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().invalidate();
 		boolean connected = false;
-		
-		if(request.getParameter("authentify") != null) {
-			Participant participant = new Participant();
+		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+	    if (ajax) {
+	        // Handle ajax (JSON or XML) response.
+	    	Participant participant = new Participant();
 			String log = request.getParameter("loginL");
 			String pw = request.getParameter("passwordL");
 			participant.setLogin(log);
@@ -46,17 +45,22 @@ public class LoginServlet extends HttpServlet {
 			if(verified) {
 				HttpSession Sess = request.getSession();
 				Sess.setAttribute("Connected", participant);
+				Sess.setAttribute("firstLog",true);
 				connected = true;
-			}
-			else {
+				response.setContentType("text/html ; charset=UTF-8");
+				response.getWriter().write("good");
+				//response.sendRedirect(request.getContextPath()+ "/");
+			}else {
 				Representative rep = new Representative();
 				rep.setLogin(log);
 				rep.setPassword(pw);
-				verified = representativeDao.authentify(rep); //Entreprise is set for representative in the function authentify
+				verified = representativeDao.authentify(rep); //Entreprise is set for representative in the function authentify()
 				if(verified) {
 					HttpSession Sess = request.getSession();
 					Sess.setAttribute("Connected", rep);
 					connected = true;
+					response.setContentType("text/html ; charset=UTF-8");
+					response.getWriter().write("good");
 				}
 				else {
 					Admin admin = new Admin();
@@ -67,19 +71,26 @@ public class LoginServlet extends HttpServlet {
 						HttpSession Sess = request.getSession();
 						Sess.setAttribute("Connected", admin);
 						connected = true;
+						response.setContentType("text/html ; charset=UTF-8");
+						response.getWriter().write("good");
 					}
-					else
-						request.setAttribute("con", "Login or password incorrect");
+					else {
+						response.setContentType("text/html ; charset=UTF-8");
+						response.getWriter().write("error");
+						}
 				}
-			}	
-		}
-		
-		if(!connected) 
+			}
+	    	
+	    }
+	    
+		/*if(!connected) 
 			this.doGet(request, response);
 		else
 		{
 			response.sendRedirect(request.getContextPath()+ "/"); // we use redirect because forward() will keep the post data even after going to index
-		}
+		}*/
+		
+	   
 	}
 
 }

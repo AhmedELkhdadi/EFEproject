@@ -25,8 +25,74 @@
     <link href="${pageContext.request.contextPath}/assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
 
-    <!-- Template Main CSS File -->
+
+<!-- Template Main CSS File -->
     <link href="${pageContext.request.contextPath}/assets/css/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    
+  <style>   
+    /* Google Font */
+/* latin */
+@font-face {
+font-family: 'Google Sans';
+font-style: normal;
+font-weight: 400;
+src: local('Google Sans Regular'), local(GoogleSans-Regular), url(//fonts.gstatic.com/s/googlesans/v5/4UaGrENHsxJlGDuGo1OIlL3Owp4.woff2) format("woff2");
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+ 
+/* latin */
+@font-face {
+font-family: 'Google Sans';
+font-style: normal;
+font-weight: 500;
+src: local('Google Sans Medium'), local('GoogleSans-Medium'), url(https://fonts.gstatic.com/s/googlesans/v11/4UabrENHsxJlGDuGo1OIlLU94YtzCwY.woff2) format('woff2');
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+    
+        body {
+            font-family: Google Sans, sans-serif;
+        }
+        
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    font-family: Google Sans, sans-serif;
+    font-weight: 400;
+    margin: 0 0 20px 0;
+    padding: 0;
+    color: #0e1b4d;
+}
+   
+   
+   /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}     
+    </style>
+
+
 
 
    
@@ -34,8 +100,13 @@
 
 <body>
 
+
+
     <!-- ======= Header ======= -->
     <header id="header">
+    
+    
+    
         <div class="container">
 
             <div id="logo" class="pull-left">
@@ -59,7 +130,14 @@
 	                    <li class="buy-tickets"><a href="${pageContext.request.contextPath}/sign_up">Sign up</a></li>
                     </c:if>
                     <c:if test="${ connected ==	 true }">
-	                    <li><a href="" class="nameNav"> ${ user.getName()}  ${ user.getFname() }</a></li>
+	                    <c:choose>
+	                    <c:when test="${ user.getStatus() == 3 }">
+	                    	<li class="buy-tickets"><a href="participant?id_p=${ user.getId() }" > My Profil </a></li>
+	                    </c:when>
+	                    <c:when test="${ user.getStatus() == 2 }">
+	                    	<li class="buy-tickets"><a href="workshop?Rep=${ user.getId()}"> My Workshop </a></li>
+	                    </c:when>
+	                    </c:choose>
 	                    <li class="buy-tickets"><a href="${pageContext.request.contextPath}/?logout">Log out</a></li>
                     </c:if>
                     
@@ -73,7 +151,7 @@
     <!-- ======= Intro Section ======= -->
     <section id="intro">
         <div class="intro-container" data-aos="zoom-in" data-aos-delay="100">
-            <h1 class="mb-4 pb-0">The Annual<br><span>ENSAK</span> FORUM<br>Enterprise</h1>
+            <h1 class="mb-4 pb-0">The Annual<br><span>ENSAK</span> FORUM <br> ENTERPRISE</h1>
             <c:if test="${ eventState == 0 }">
 			<h3 class="text-light mb-4 pb-0">Starts in <b id="blockCountdown" class="text-info" style="display:none"> ${ msUntillStart }</b>, Be Ready! </h3>                            	
 			</c:if>
@@ -84,12 +162,13 @@
 	        			<h3 class="text-light mb-4 pb-0"> The Event has Started, Comeback tomorrow for Day2.</h3>  
 	        		</c:when>
 	        		<c:otherwise>
-	        			<p class="m-0 p-0 "> OnGoing Activity: <b class="text-warning" >${ currentActivity.getName() }</b></p> 
+	        			<p class="m-0 p-0 "> OnGoing Activity : <b style="color: #F82249;" >${ currentActivity.getName() }</b></p> 
 	      		</c:otherwise>
 	      	</c:choose>                          	
 	        </c:if>
             <a href="https://www.youtube.com/watch?v=pFq6kQP4x-E&ab_channel=ENSAKEntreprises" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
              <div style="display: inline;">
+             <a href="#about" class="about-btn scrollto">About The Event</a>
               <c:if test="${ connected == true }">
              <a href="stands" class="about-btn">Go to Workshops</a>
              </c:if>
@@ -114,17 +193,16 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <h2>About The Event</h2>
-                        <p>Sed nam ut dolor qui repellendus iusto odit. Possimus inventore eveniet accusamus error amet eius aut accusantium et. Non odit consequatur repudiandae sequi ea odio molestiae. Enim possimus sunt inventore in est ut optio sequi
-                            unde.
+                        <p>Ensak Forum entreprise is an annual event organized by Ensa of Kenitra in collaboration with companies from different cities of Morocco and even abroad. It is therefore the opportunity for students to discover the world of business and its challenges. They also have the possibility to discuss with professionals from the world of employment and can also submit their CVs in order to obtain possible internships in one of these companies.
                         </p>
                     </div>
                     <div class="col-lg-3">
                         <h3>Where</h3>
-                        <p>Downtown Conference Center, New York</p>
+                        <p>At Ibn Tofail University - ENSA Kenitra, Morocco</p>
                     </div>
                     <div class="col-lg-3">
                         <h3>When</h3>
-                        <p>Monday to Wednesday<br>10-12 December</p>
+                        <p>Monday and Tuesday<br>09-10 February</p>
                     </div>
                 </div>
             </div>
@@ -141,18 +219,24 @@
 
                 <div class="row">
                 <c:forEach items="${ speakers }" var="speaker">
-                	<div class="col-lg-3 col-md-6">
+                	<div class="col-lg-4 col-md-6">
                         <div class="speaker" data-aos="fade-up" data-aos-delay="100">
                             <img src="${pageContext.request.contextPath}/assets/img/speakers/${speaker.getImage()}" alt="Speaker" class="img-fluid" style="width:100%;height:330px;">
                             <div class="details">
                                 <h3><a href="">${ speaker.getName() } ${ speaker.getFname() }</a></h3>
                                 <p>${ speaker.getDescription() }</p>
+                                <div class="social">
+                                    <a href=""><i class="fa fa-twitter"></i></a>
+                                    <a href=""><i class="fa fa-facebook"></i></a>
+                                    <a href=""><i class="fa fa-google-plus"></i></a>
+                                    <a href=""><i class="fa fa-linkedin"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </c:forEach>
             </div>
-
+		</div>
         </section>
         <!-- End Speakers Section -->
 
@@ -235,14 +319,14 @@
             </div>
 
             <div class="owl-carousel gallery-carousel" data-aos="fade-up" data-aos-delay="100">
-                <a href="${pageContext.request.contextPath}/assets/img/gallery/1.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/1.jpg" alt=""></a>
-                <a href="${pageContext.request.contextPath}/assets/img/gallery/2.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/2.jpg" alt=""></a>
-                <a href="${pageContext.request.contextPath}/assets/img/gallery/3.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/3.jpg" alt=""></a>
-                <a href="${pageContext.request.contextPath}/assets/img/gallery/4.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/4.jpg" alt=""></a>
-                <a href="${pageContext.request.contextPath}/assets/img/gallery/5.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/5.jpg" alt=""></a>
-                <a href="${pageContext.request.contextPath}/assets/img/gallery/6.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/6.jpg" alt=""></a>
-                <a href="${pageContext.request.contextPath}/assets/img/gallery/7.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/7.jpg" alt=""></a>
-                <a href="${pageContext.request.contextPath}/assets/img/gallery/8.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/8.jpg" alt=""></a>
+                <a href="${pageContext.request.contextPath}/assets/img/gallery/11.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/11.jpg" alt=""></a>
+                <a href="${pageContext.request.contextPath}/assets/img/gallery/22.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/22.jpg" alt=""></a>
+                <a href="${pageContext.request.contextPath}/assets/img/gallery/33.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/33.jpg" alt=""></a>
+                <a href="${pageContext.request.contextPath}/assets/img/gallery/44.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/44.jpg" alt=""></a>
+                <a href="${pageContext.request.contextPath}/assets/img/gallery/55.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/55.jpg" alt=""></a>
+                <a href="${pageContext.request.contextPath}/assets/img/gallery/66.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/66.jpg" alt=""></a>
+                <a href="${pageContext.request.contextPath}/assets/img/gallery/77.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/77.jpg" alt=""></a>
+                <a href="${pageContext.request.contextPath}/assets/img/gallery/88.jpg" class="venobox" data-gall="gallery-carousel"><img src="${pageContext.request.contextPath}/assets/img/gallery/88.jpg" alt=""></a>
             </div>
 
         </section>
@@ -254,55 +338,56 @@
             <div class="container" data-aos="fade-up">
                 <div class="section-header">
                     <h2>Sponsors</h2>
+                    <p>Here are the sponsors of this event</p>
                 </div>
 
                 <div class="row no-gutters supporters-wrap clearfix" data-aos="zoom-in" data-aos-delay="100">
 
                     <div class="col-lg-3 col-md-4 col-xs-6">
                         <div class="supporter-logo">
-                            <img src="${pageContext.request.contextPath}/assets/img/supporters/1.png" class="img-fluid" alt="">
+                            <img src="${pageContext.request.contextPath}/assets/img/supporters/11.png" class="img-fluid" alt="">
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-4 col-xs-6">
                         <div class="supporter-logo">
-                            <img src="${pageContext.request.contextPath}/assets/img/supporters/2.png" class="img-fluid" alt="">
+                            <img src="${pageContext.request.contextPath}/assets/img/supporters/22.png" class="img-fluid" alt="">
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-4 col-xs-6">
                         <div class="supporter-logo">
-                            <img src="${pageContext.request.contextPath}/assets/img/supporters/3.png" class="img-fluid" alt="">
+                            <img src="${pageContext.request.contextPath}/assets/img/supporters/33.png" class="img-fluid" alt="">
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-4 col-xs-6">
                         <div class="supporter-logo">
-                            <img src="${pageContext.request.contextPath}/assets/img/supporters/4.png" class="img-fluid" alt="">
+                            <img src="${pageContext.request.contextPath}/assets/img/supporters/44.png" class="img-fluid" alt="">
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-4 col-xs-6">
                         <div class="supporter-logo">
-                            <img src="${pageContext.request.contextPath}/assets/img/supporters/5.png" class="img-fluid" alt="">
+                            <img src="${pageContext.request.contextPath}/assets/img/supporters/55.png" class="img-fluid" alt="">
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-4 col-xs-6">
                         <div class="supporter-logo">
-                            <img src="${pageContext.request.contextPath}/assets/img/supporters/6.png" class="img-fluid" alt="">
+                            <img src="${pageContext.request.contextPath}/assets/img/supporters/66.png" class="img-fluid" alt="">
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-4 col-xs-6">
                         <div class="supporter-logo">
-                            <img src="${pageContext.request.contextPath}/assets/img/supporters/7.png" class="img-fluid" alt="">
+                            <img src="${pageContext.request.contextPath}/assets/img/supporters/77.png" class="img-fluid" alt="">
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-4 col-xs-6">
                         <div class="supporter-logo">
-                            <img src="${pageContext.request.contextPath}/assets/img/supporters/8.png" class="img-fluid" alt="">
+                            <img src="${pageContext.request.contextPath}/assets/img/supporters/88.png" class="img-fluid" alt="">
                         </div>
                     </div>
 
@@ -320,6 +405,7 @@
 
                 <div class="section-header">
                     <h2>F.A.Q </h2>
+                    <p>Answers to Frequently Asked Questions.</p>
                 </div>
 
                 <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
@@ -327,63 +413,52 @@
                         <ul id="faq-list">
 
                             <li>
-                                <a data-toggle="collapse" class="collapsed" href="#faq1">Non consectetur a erat nam at lectus urna duis? <i class="fa fa-minus-circle"></i></a>
+                                <a data-toggle="collapse" class="collapsed" href="#faq1">Is the event only open to ENSA students? <i class="fa fa-minus-circle"></i></a>
                                 <div id="faq1" class="collapse" data-parent="#faq-list">
-                                    <p>
-                                        Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.
-                                    </p>
+<p> Anyone studying in a University in Morocco or outside can attend this event, especially since it is digital.                                    </p>
                                 </div>
                             </li>
 
                             <li>
-                                <a data-toggle="collapse" href="#faq2" class="collapsed">Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque? <i class="fa fa-minus-circle"></i></a>
+                                <a data-toggle="collapse" href="#faq2" class="collapsed">Is the Forum 100% digital? <i class="fa fa-minus-circle"></i></a>
                                 <div id="faq2" class="collapse" data-parent="#faq-list">
                                     <p>
-                                        Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in
-                                        cursus turpis massa tincidunt dui.
-                                    </p>
+Well yes ! All the tools are in place to ensure you have a good experience during this Forum from home!                                    </p>
                                 </div>
                             </li>
 
                             <li>
-                                <a data-toggle="collapse" href="#faq3" class="collapsed">Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi? <i class="fa fa-minus-circle"></i></a>
+                                <a data-toggle="collapse" href="#faq3" class="collapsed">How to contact the companies? <i class="fa fa-minus-circle"></i></a>
                                 <div id="faq3" class="collapse" data-parent="#faq-list">
                                     <p>
-                                        Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna
-                                        molestie at elementum eu facilisis sed odio morbi quis
-                                    </p>
-                                </div>
+Once registered on the platform, You have access to all the stands as well as the possibility to contact them and even send your CVs. </p>                                </div>
                             </li>
 
                             <li>
-                                <a data-toggle="collapse" href="#faq4" class="collapsed">Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla? <i class="fa fa-minus-circle"></i></a>
+                                <a data-toggle="collapse" href="#faq4" class="collapsed">Will we be able to access the platform even after the forum in order to always contact companies? <i class="fa fa-minus-circle"></i></a>
                                 <div id="faq4" class="collapse" data-parent="#faq-list">
                                     <p>
-                                        Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in
-                                        cursus turpis massa tincidunt dui.
-                                    </p>
+The Forum will last 2 days, but after this period you can always go to consult to see the responses of companies to your various requests.                                    </p>
                                 </div>
                             </li>
 
-                            <li>
-                                <a data-toggle="collapse" href="#faq5" class="collapsed">Tempus quam pellentesque nec nam aliquam sem et tortor consequat? <i class="fa fa-minus-circle"></i></a>
-                                <div id="faq5" class="collapse" data-parent="#faq-list">
-                                    <p>
-                                        Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in
-                                    </p>
-                                </div>
-                            </li>
+                           
 
                             <li>
-                                <a data-toggle="collapse" href="#faq6" class="collapsed">Tortor vitae purus faucibus ornare. Varius vel pharetra vel turpis nunc eget lorem dolor? <i class="fa fa-minus-circle"></i></a>
+                                <a data-toggle="collapse" href="#faq6" class="collapsed">Will the data required for registration be kept confidential?<i class="fa fa-minus-circle"></i></a>
                                 <div id="faq6" class="collapse" data-parent="#faq-list">
                                     <p>
-                                        Laoreet sit amet cursus sit amet dictum sit amet justo. Mauris vitae ultricies leo integer malesuada nunc vel. Tincidunt eget nullam non nisi est sit amet. Turpis nunc eget lorem dolor sed. Ut venenatis tellus in metus vulputate eu scelerisque. Pellentesque
-                                        diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Nibh tellus molestie nunc non blandit massa enim nec.
-                                    </p>
+Absolutely! You have the possibility to update your profile in order to mention the information that you wish to make visible to recruiters or company representatives. Everything is configurable with our site.                                    </p>
                                 </div>
                             </li>
 
+ <li>
+                                <a data-toggle="collapse" href="#faq5" class="collapsed">Who to contact for more information?<i class="fa fa-minus-circle"></i></a>
+                                <div id="faq5" class="collapse" data-parent="#faq-list">
+                                    <p>
+In order to obtain more information, you can contact us directly in the contact section available at the bottom of the home page.                                    </p>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -400,7 +475,7 @@
 
                 <div class="section-header">
                     <h2>Contact Us</h2>
-                    <p>Nihil officia ut sint molestiae tenetur.</p>
+                    <p>Joins us for more informations</p>
                 </div>
 
                 <div class="row contact-info">
@@ -409,7 +484,7 @@
                         <div class="contact-address">
                             <i class="ion-ios-location-outline"></i>
                             <h3>Address</h3>
-                            <address>A108 Adam Street, NY 535022, USA</address>
+                            <address>campus universitaire, B.P 241, Kénitra - 14 000 - Maroc</address>
                         </div>
                     </div>
 
@@ -417,7 +492,7 @@
                         <div class="contact-phone">
                             <i class="ion-ios-telephone-outline"></i>
                             <h3>Phone Number</h3>
-                            <p><a href="tel:+155895548855">+1 5589 55488 55</a></p>
+                            <p><a href="tel:(+212) 5 37 37 67 65">(+212) 5 37 37 67 65 / (+212) 5 37 32 94 48 | Fax : (+212) 5 37 37 40 52</a></p>
                         </div>
                     </div>
 
@@ -425,7 +500,7 @@
                         <div class="contact-email">
                             <i class="ion-ios-email-outline"></i>
                             <h3>Email</h3>
-                            <p><a href="mailto:info@example.com">info@example.com</a></p>
+                            <p><a href="mailto:ensa@contact.com">ensa@contact.com</a></p>
                         </div>
                     </div>
 
@@ -475,6 +550,8 @@
                 &copy; Copyright <strong>TheEvent</strong>. All Rights Reserved
             </div>
             <div class="credits">
+
+                Designed in <a href="https://bootstrapmade.com/">Morocco</a>
             </div>
         </div>
     </footer>
@@ -493,15 +570,31 @@
     <script src="${pageContext.request.contextPath}/assets/vendor/superfish/superfish.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/vendor/hoverIntent/hoverIntent.js"></script>
     <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
+    
+    
 
     <!-- Template Main JS File -->
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 	
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <c:if test="${ sessionScope.firstLog == true}">
+	<script>
+	swal( "Logged in" ,  "Welcome back ${user.getFullName()} !" ,  "success" );
+	</script>
+	<c:set var="firstLog" value="${false}" scope="session"/>
+	</c:if>
 	<script>
 		$(".nameNav").click(function(e){
 			e.preventDefault();
 		});
 	</script>
+	
+	<script>
+function dismissAlert(){
+	$("#alert").fadeOut(500);
+}
+</script>
+	
 </body>
 
 </html>

@@ -10,13 +10,14 @@ public class Message {
 	private String message;
 	private String writer_id;
 	private String writer_name;
+	private int writerStatus;
 	private int privacy;
 	private String id_stand;
 	private String message_date;
 	private int responseTo;
 	private List<Message> responses;
 	
-	public Message(int id,String message, String writer_id,String writer_name,String stand,Date date,int privacy) {
+	public Message(int id,String message, String writer_id,String writer_name,String stand,Date date,int privacy, int writerStatus) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
 		this.id_message = id;
 		this.message= message;
@@ -25,6 +26,7 @@ public class Message {
 		this.id_stand = stand;
 		this.message_date= formatter.format(date);
 		this.privacy = privacy;
+		this.writerStatus = writerStatus;
 	}
 	
 	public int getId_message() {
@@ -86,5 +88,13 @@ public class Message {
 
 	public void setWriter_name(String writer_name) {
 		this.writer_name = writer_name;
+	}
+
+	public int getWriterStatus() {
+		return writerStatus;
+	}
+
+	public void setWriterStatus(int writerStatus) {
+		this.writerStatus = writerStatus;
 	}
 }

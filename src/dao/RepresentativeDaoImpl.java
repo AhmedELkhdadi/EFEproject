@@ -89,7 +89,6 @@ public class RepresentativeDaoImpl implements RepresentativeDao{
 				rep.setEmail(result.getString("email"));
 				rep.setTel(result.getString("phone"));
 				rep.setApproved(result.getBoolean("approved"));
-				rep.setMessage(result.getString("message"));
 				rep.setStatus(2);
 				Entreprise ent = entDao.selectEntreprise(id_r);
 				if(ent == null)
@@ -116,7 +115,7 @@ public class RepresentativeDaoImpl implements RepresentativeDao{
 			ResultSet res = query.executeQuery("SELECT * FROM representatives WHERE approved IS NULL;");
 			while(res.next()) {
 				String id_r = res.getString("id_r");
-				Representative rep = new Representative(id_r,res.getString("login"),null,res.getString("name"),res.getString("fname"),res.getString("email"),res.getString("phone"),null,res.getBoolean("approved"),null,null,2);
+				Representative rep = new Representative(id_r,res.getString("login"),null,res.getString("name"),res.getString("fname"),res.getString("email"),res.getString("phone"),null,res.getBoolean("approved"),2);
 				rep.entreprise = entDao.selectEntreprise(id_r);
 				repList.add(rep);
 			}
@@ -139,7 +138,7 @@ public class RepresentativeDaoImpl implements RepresentativeDao{
 			ResultSet res = query.executeQuery("SELECT * FROM representatives WHERE approved='1';");
 			while(res.next()) {
 				String id_r = res.getString("id_r");
-				Representative rep = new Representative(id_r,res.getString("login"),null,res.getString("name"),res.getString("fname"),res.getString("email"),res.getString("phone"),null,res.getBoolean("approved"),null,null,2);
+				Representative rep = new Representative(id_r,res.getString("login"),null,res.getString("name"),res.getString("fname"),res.getString("email"),res.getString("phone"),null,res.getBoolean("approved"),2);
 				rep.entreprise = entDao.selectEntreprise(id_r);
 				repList.add(rep);
 			}

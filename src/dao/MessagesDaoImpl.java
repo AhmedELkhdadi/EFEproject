@@ -27,13 +27,13 @@ public class MessagesDaoImpl implements MessagesDao{
 			while(msgRes.next()) {	
 				responseTo = msgRes.getInt("responseTo") ;			//return 0 when column is null
 				if(msgRes.wasNull()) {      // was null returns true if last column read is null;
-					Message main = new Message(msgRes.getInt("id"),msgRes.getString("message"),msgRes.getString("person_id"),msgRes.getString("person_name"),stand,msgRes.getTimestamp("date"),msgRes.getInt("privacy"));
+					Message main = new Message(msgRes.getInt("id"),msgRes.getString("message"),msgRes.getString("person_id"),msgRes.getString("person_name"),stand,msgRes.getTimestamp("date"),msgRes.getInt("privacy"),msgRes.getInt("person_status"));
 					main.setResponses(new ArrayList<Message>());
 					mainMessages.add(main);
 					
 				}
 				else {
-					Message response = new Message(msgRes.getInt("id"),msgRes.getString("message"),msgRes.getString("person_id"),msgRes.getString("person_name"),stand,msgRes.getTimestamp("date"),msgRes.getInt("privacy"));
+					Message response = new Message(msgRes.getInt("id"),msgRes.getString("message"),msgRes.getString("person_id"),msgRes.getString("person_name"),stand,msgRes.getTimestamp("date"),msgRes.getInt("privacy"),msgRes.getInt("person_status"));
 					for(Message main : mainMessages) {
 						if(main.getId_message() == responseTo) {
 							main.getResponses().add(response);
@@ -49,12 +49,12 @@ public class MessagesDaoImpl implements MessagesDao{
 		}
 	}
 
-	public Integer addMessage(String message,String person_id,String person_name, String stand_id,Integer responseTo,int privacy) {
+	public Integer addMessage(String message,String person_id,String person_name, String stand_id,Integer responseTo,int privacy,int person_status) {
 		Connection conn = null;
 		PreparedStatement query = null;
 		try {
 			conn = daoFactory.getConnection();
-			query = conn.prepareStatement("Insert INTO chatmessages(message,person_id,person_name,stand,responseTo,privacy) Values(?,?,?,?,?,?);",Statement.RETURN_GENERATED_KEYS);
+			query = conn.prepareStatement("Insert INTO chatmessages(message,person_id,person_name,stand,responseTo,privacy,person_status) Values(?,?,?,?,?,?,?);",Statement.RETURN_GENERATED_KEYS);
 			query.setString(1,message);
 			query.setString(2,person_id);
 			query.setString(3,person_name);
@@ -64,6 +64,7 @@ public class MessagesDaoImpl implements MessagesDao{
 			else
 				query.setInt(5, responseTo.intValue());
 			query.setInt(6,privacy);
+			query.setInt(7, person_status);
 			if(query.executeUpdate()!= 0) {
 				ResultSet keys = query.getGeneratedKeys();
 				if(keys.next()) {

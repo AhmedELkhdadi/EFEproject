@@ -27,10 +27,9 @@ public class ParticipantDaoImpl implements ParticipantDao{
 		
 		try {
 			conn = daoFactory.getConnection();
-			UUID uid = UUID.randomUUID();
-			String id = "" + uid;
-			prepStatement = conn.prepareStatement("INSERT INTO participants Values(?,?,?,?,?,?,?,?,?,?,?,?)");
-			prepStatement.setString(1, id);
+			
+			prepStatement = conn.prepareStatement("INSERT INTO participants(id_p,login,password,name,fname,email,phone,level,institution,studyField,sexe,age,imagePath) Values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			prepStatement.setString(1, participant.getId());
 			prepStatement.setString(2, participant.getLogin());
 			prepStatement.setString(3, participant.getPassword());
 			prepStatement.setString(4, participant.getName());
@@ -42,6 +41,7 @@ public class ParticipantDaoImpl implements ParticipantDao{
 			prepStatement.setString(10, participant.getStudyField());
 			prepStatement.setString(11, participant.getSexe() );
 			prepStatement.setInt(12, participant.getAge() );
+			prepStatement.setString(13,participant.getImage());
 			prepStatement.executeUpdate();
 			
 			return true;
@@ -88,40 +88,7 @@ public class ParticipantDaoImpl implements ParticipantDao{
 				participant.setId(result.getString("id_p")); 
 				participant.setName(result.getString("name"));
 				participant.setFname(result.getString("fname"));
-				participant.setEmail(result.getString("email"));
-				participant.setTel(result.getString("phone"));
-				participant.setInstitution(result.getString("institution"));
-				participant.setLevel(result.getString("level"));
-				participant.setStudyField(result.getString("studyField"));
-				participant.setSexe(result.getString("sexe"));
-				participant.setAge(result.getInt("age"));
 				participant.setStatus(3);
-				
-				
-				//TODO: this code is for when I start using lvl and inst id's in participants table, must change  addparticipant() when I do that
-//				int instId = result.getInt("institution");
-//				try {											// we get institution id, then execute an sql query to get matching name.
-//					Statement InstiQuery = conn.createStatement();
-//					ResultSet InstResult = InstiQuery.executeQuery("SELECT name WHERE id_inst='"+ instId +"';");
-//					InstResult.next();
-//					
-//					participant.setInstitution(InstResult.getString("name"));
-//				}catch(SQLException e) {
-//					e.printStackTrace();
-//				}
-//				
-//				int levelId = result.getInt("level");
-//				try {											// we get level id, then execute an sql query to get matching name.
-//					Statement levelQuery = conn.createStatement();
-//					ResultSet levelResult = levelQuery.executeQuery("SELECT name WHERE id_level='"+ levelId +"';");
-//					levelResult.next();
-//					
-//					participant.setLevel(levelResult.getString("name"));
-//				}catch(SQLException e) {
-//					e.printStackTrace();
-//				}
-				
-				
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -130,6 +97,31 @@ public class ParticipantDaoImpl implements ParticipantDao{
 		return true;
 	}
 	
+	public Participant selectPart(String id) {
+		Connection conn = null;
+		Statement query = null;
+		Participant participant = new Participant();
+		try {
+			conn= daoFactory.getConnection();
+			query = conn.createStatement();
+			ResultSet result = query.executeQuery("SELECT * FROM participants WHERE id_p='"+id+"';");
+			if(result.next() == false)
+				return null;
+			else {
+				participant = new Participant(id,result.getString("name"),result.getString("fname"),result.getString("email"), result.getString("phone")
+						, result.getString("institution"),result.getString("level"),result.getString("studyField"),result.getString("sexe")
+						,result.getInt("age"),result.getString("imagePath"),3,result.getString("training"), result.getString("awards"), result.getString("techSkills")
+						, result.getString("softSkills"),result.getString("langages"),result.getString("description"),result.getString("intrests")
+						,result.getString("facebook"),result.getString("gitHub"),result.getString("linkedIn"));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return participant;
+	}
+	
+
 	public List<Participant> SelectAll() {
 		Connection conn = null;
 		Statement query = null;
@@ -140,8 +132,9 @@ public class ParticipantDaoImpl implements ParticipantDao{
 			query = conn.createStatement();
 			ResultSet res = query.executeQuery("SELECT * FROM participants");
 			while(res.next()) {
-				Participant part = new Participant(res.getString("id_p"),res.getString("login"), res.getString("password"), res.getString("name"), res.getString("fname"), res.getString("email"), res.getString("phone"),
-													res.getString("institution"), res.getString("level"), res.getString("studyField"),res.getString("sexe"),res.getInt("age"),3);
+				Participant part = new Participant(res.getString("id_p"), res.getString("name"), res.getString("fname"), res.getString("email"), res.getString("phone"),
+													res.getString("institution"), res.getString("level"), res.getString("studyField"),res.getString("sexe"),
+													res.getInt("age"),res.getString("imagePath"),3,res.getString("facebook"),res.getString("gitHub"),res.getString("linkedIn"));
 				participants.add(part);
 			}
 		}catch(SQLException e) {
@@ -184,5 +177,35 @@ public class ParticipantDaoImpl implements ParticipantDao{
 			return null;
 		}
 	}
-	
+	public boolean modifyInfo(String id,String training, String awards, String techSkills, String softSkills
+			, String langages,String description,String intrests,String email,String phone,String facebook,String gitHub,String linkedIn) {
+		Connection conn = null;
+		PreparedStatement prepStatement = null;
+		
+		try {
+			conn = daoFactory.getConnection();
+			prepStatement = conn.prepareStatement("UPDATE participants SET training=?, awards=?, techSkills=?, softskills=?, langages=?, description=? "
+					+ ",intrests=? ,email= ?,phone=?,facebook =? ,gitHub=?,linkedIn=? Where id_p =? ");
+			prepStatement.setString(1, training);
+			prepStatement.setString(2, awards);
+			prepStatement.setString(3, techSkills);
+			prepStatement.setString(4, softSkills);
+			prepStatement.setString(5, langages);
+			prepStatement.setString(6, description);
+			prepStatement.setString(7, intrests); 
+			prepStatement.setString(8, email );
+			prepStatement.setString(9, phone);
+			prepStatement.setString(10, facebook);
+			prepStatement.setString(11, gitHub);
+			prepStatement.setString(12, linkedIn);
+			prepStatement.setString(13, id);
+			prepStatement.executeUpdate();
+			
+			return true;
+			
+			}catch(SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+	}
 }

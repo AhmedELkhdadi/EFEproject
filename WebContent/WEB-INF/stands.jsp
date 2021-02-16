@@ -27,7 +27,60 @@
 
     <!-- Template Main CSS File -->
     <link href="${pageContext.request.contextPath}/assets/css/style.css" rel="stylesheet">
+    
+    <style>
+          /* Google Font */
+/* latin */
+@font-face {
+font-family: 'Google Sans';
+font-style: normal;
+font-weight: 400;
+src: local('Google Sans Regular'), local(GoogleSans-Regular), url(//fonts.gstatic.com/s/googlesans/v5/4UaGrENHsxJlGDuGo1OIlL3Owp4.woff2) format("woff2");
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+ 
+/* latin */
+@font-face {
+font-family: 'Google Sans';
+font-style: normal;
+font-weight: 500;
+src: local('Google Sans Medium'), local('GoogleSans-Medium'), url(https://fonts.gstatic.com/s/googlesans/v11/4UabrENHsxJlGDuGo1OIlLU94YtzCwY.woff2) format('woff2');
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+    
+        body {
+            font-family: Google Sans, sans-serif;
+            height: 100vh;
+        }
+        
+h1,h2,h3,h4,h5,h6 {
+    font-family: Google Sans, sans-serif;
+    font-weight: 400;
+    margin: 0 0 20px 0;
+    padding: 0;
+    color: #0e1b4d;
+}
 
+   /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+    </style>
 </head>
 
 <body>
@@ -43,7 +96,7 @@
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
 
-                    <li class="buy-tickets"><a href="${pageContext.request.contextPath }/">Go Back</a></li>
+                    <li class="buy-tickets" style="cursor:pointer;"><a onclick="goBack()">Go Back</a></li>
                 </ul>
             </nav>
             <!-- #nav-menu-container -->
@@ -109,22 +162,29 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="hotel shadow">
                             <div class="hotel-img">
-                                <a href="${pageContext.request.contextPath }/workshop?Rep=${rep.getId()}"><img src="${pageContext.request.contextPath}/assets/img/EnterpriseBanners/${rep.getEntreprise().getBannerImage()}" alt="Stand 1" class="img-fluid"></a>
+                                <a href="${pageContext.request.contextPath }/workshop?Rep=${rep.getId()}"><img src="${pageContext.request.contextPath}/assets/img/EnterpriseBanners/${rep.getEntreprise().getBannerImage()}" alt="Stand 1" class="img-fluid" style="height:90px; width:100%"></a>
                             </div>
+                            <div style="margin-top:-15px; height : 220px; overflow-y: scroll; border-bottom: 1px solid #F1F1F1; padding:10px;">
                             <h3><a href="${pageContext.request.contextPath }/workshop?Rep=${rep.getId()}">${ rep.getEntreprise().getName() }</a></h3>
                             <h3 class=""><small>Representative: <strong>${ rep.getName()} ${ rep.getFname()} </strong></small></h3>
                             <p>${ rep.getEntreprise().getDescription() }</p>
+                            </div>
                             <c:if test="${ eventState == 1 }">
 	                        <c:if test="${ currentActivity.getName() == 'Stands and Workshops' }">
+                            <div class="w-100 pb-2 text-center pt-3" style="height:30px">
                             <c:if test="${  user.getStatus() != 2 && rep.getEntreprise().getMeetLink() != null  }">
-                            	<div class="w-100 pb-2 text-center">
+                            	
 				          		<strong class="text-info">
 				            	<a href="https://${ rep.getEntreprise().getMeetLink() }" target="_blank">${ rep.getEntreprise().getMeetLink() }</a>
 				            	</strong>
-				            	</div>
+				            	
+							</c:if>
+							</div>
 							</c:if>
 							</c:if>
-							</c:if>
+							
+							<div style="display : flex; align-items:center; justify-content: center; margin : 20px;">
+							<a class="btn btn-primary btn-sm shadow text-white" href="${pageContext.request.contextPath }/workshop?Rep=${rep.getId()}">More Details</a></div>
                         </div>
                     </div>
 					</c:forEach>
@@ -164,7 +224,11 @@
 
     <!-- Template Main JS File -->
     <script src="${pageContext.request.contextPath}/assets/js/main2.js"></script>
-
+	<script>
+    function goBack(){
+    	window.history.back();
+    }
+    </script>
 </body>
 
 </html>

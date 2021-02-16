@@ -8,7 +8,7 @@ public abstract class Person {
 	protected String fname;
 	protected String email;
 	protected String tel;
-	protected int status;
+	protected int status;  //1-admin, 2-representative, 3-participant
 	
 	
 	Person(String id,String login,String password,String name,String fname,String email,String tel,int status){
@@ -85,4 +85,7 @@ public abstract class Person {
 		this.status = status;
 	}
 	
+	public String getFullName() {
+		return (name +' '+ fname);
+	}
 }

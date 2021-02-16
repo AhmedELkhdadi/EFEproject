@@ -205,47 +205,76 @@ function exportTableToCSV(filename) {
     downloadCSV(csv.join("\n"), filename);
 }
 
-function showModal(id,op){
-	$('#confirmValue').val(id);
-	if(op == 1)
-	$('#acceptModal').modal('show');
-	else
-	$('#rejectModal').modal('show');
-	
-}
+function showModal(id, email,op) {
+    if (op == 1) {
+        swal({
+            title: "Are you sure?",
+            text: "Do you really want to accept this enterprise to be added to the workshops",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.post(
+                        "admin", {
+                        approvalOperation: op,
+                        email : email,
+                        rep_id: id
+                    },
+                        function (data) {
+                            if (data == '1') {
+                                $('#acceptModal').modal('hide');
+                                $('#approvedRepsNum').text(Number($('#approvedRepsNum').text()) + 1);
+                                $('#waintingRepsNum').text(Number($('#waintingRepsNum').text()) - 1);
+                                $('#approved' + id).show();
+                                $('#nonApproved' + id).remove();
+                                swal("Enterprise approved successfully !", {
+                                    icon: "success",
+                                });
+                            }
+                        }, 'text'
+                    )
 
-function gererDemande(op) {
-	let id = $('#confirmValue').val();
-    $.post(
-    "admin",{
-    	approvalOperation: op,
-    	rep_id: id
-    },
-    function(data) {
-    		
-		if(data == '1'){
-			if(op == 1){
-				$('#acceptModal').modal('hide');
-				$('#approvedRepsNum').text(Number($('#approvedRepsNum').text())+1);
-				$('#waintingRepsNum').text(Number($('#waintingRepsNum').text())-1);
-				$('#approved'+id).show();
-				var message = "Enterprise Accepted, and is visible in workshops !";
-				}
-			else{
-				$('#rejectModal').modal('hide');
-				$('#waintingRepsNum').text(Number($('#waintingRepsNum').text())-1);
-				var message = "Enterprise Rejected !";
-				}
-			$('#nonApproved'+id).remove();
-    		var nFrom = $(this).attr('data-from');
-   			var nAlign = $(this).attr('data-align');
-    		var nIcons = $(this).attr('data-icon');
-   			var nType = $(this).attr('data-type');
-   			
-   			//data-type="inverse" data-animation-in="animated bounceIn" data-animation-out="animated bounceOut"
-			notify(nFrom, message , nAlign, nIcons, nType, "animated bounceIn", "animated bounceOut");
-			}
-    },'text'
-    )
 
+
+                } else {
+                    swal("Approval canceled.");
+                }
+
+            });
+    } else {
+        swal({
+            title: "Are you sure?",
+            text: "Do you really want to reject this enterprise ?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.post(
+                        "admin", {
+                        approvalOperation: op,
+                        email : email,
+                        rep_id: id
+                    },
+                        function (data) {
+
+                            if (data == '1') {
+                                $('#rejectModal').modal('hide');
+                                $('#waintingRepsNum').text(Number($('#waintingRepsNum').text()) - 1);
+                                $('#nonApproved' + id).remove();
+                                swal("Enterprise rejected!", {
+                                    icon: "success",
+                                });
+                            }
+                        }, 'text'
+                    )
+                } else {
+                    swal("Rejection canceled.");
+                }
+
+            });
+    }
 }

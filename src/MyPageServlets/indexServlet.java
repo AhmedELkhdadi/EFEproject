@@ -40,6 +40,7 @@ public class indexServlet extends HttpServlet {
 		List<Activity> activities1 = activityDao.SelectDayActivities(1);
 		List<Activity> activities2 = activityDao.SelectDayActivities(2);
 		request.setAttribute("activities1", activities1 );
+		
 		request.setAttribute("activities2", activities2 );
 		SimpleDateFormat formatter = new SimpleDateFormat("DD-MM-YYYY"); 
 		request.setAttribute("day1", formatter.format(activities1.get(0).getStartDate()));
@@ -54,7 +55,7 @@ public class indexServlet extends HttpServlet {
 		else{	
 			Person user = (Person) S.getAttribute("Connected");
 			request.setAttribute("user", user );
-			request.setAttribute("connected", true);
+			request.setAttribute("connected", true);			
 			this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
 			}
 		}

@@ -7,17 +7,6 @@
   version="3.0"
   xmlns:my="http://jakarta.apache.org/tomcat/jsp2-example-taglib">
 
-<servlet>
-   <servlet-name>UploadServlet</servlet-name>
-   <servlet-class>MyPageServlets.UploadServlet</servlet-class>
-</servlet>
-
-<servlet-mapping>
-   <servlet-name>UploadServlet</servlet-name>
-   <url-pattern>/UploadServlet</url-pattern>
-</servlet-mapping>
-
-
 <servlet-mapping>
 	<servlet-name>default</servlet-name>
 	<url-pattern>*.css</url-pattern>

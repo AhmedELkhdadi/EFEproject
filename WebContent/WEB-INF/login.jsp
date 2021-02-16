@@ -22,21 +22,77 @@
     <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="${pageContext.request.contextPath}/assets/css/style.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
     <style>
+          /* Google Font */
+/* latin */
+@font-face {
+font-family: 'Google Sans';
+font-style: normal;
+font-weight: 400;
+src: local('Google Sans Regular'), local(GoogleSans-Regular), url(//fonts.gstatic.com/s/googlesans/v5/4UaGrENHsxJlGDuGo1OIlL3Owp4.woff2) format("woff2");
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+ 
+/* latin */
+@font-face {
+font-family: 'Google Sans';
+font-style: normal;
+font-weight: 500;
+src: local('Google Sans Medium'), local('GoogleSans-Medium'), url(https://fonts.gstatic.com/s/googlesans/v11/4UabrENHsxJlGDuGo1OIlLU94YtzCwY.woff2) format('woff2');
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+    
         body {
-            font-family: "Open Sans", sans-serif;
+            font-family: Google Sans, sans-serif;
             height: 100vh;
         }
+        
+h1,h2,h3,h4,h5,h6 {
+    font-family: Google Sans, sans-serif;
+    font-weight: 400;
+    margin: 0 0 20px 0;
+    padding: 0;
+    color: #0e1b4d;
+}
+
+   /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
     </style>
 </head>
 
 <body>
-
-
-
     <!-- ======= Header ======= -->
     <header id="header" class="header-scrolled shadow">
         <div class="container">
@@ -49,7 +105,7 @@
                 <ul class="nav-menu">
 
 					<li class="buy-tickets"><a href="${pageContext.request.contextPath}/sign_up">Sign up</a></li>
-                    <li class="buy-tickets"><a href="index">Go Back</a></li>
+                    <li class="buy-tickets"><a onclick="goBack()">Go Back</a></li>
                 </ul>
             </nav>
             <!-- #nav-menu-container -->
@@ -57,8 +113,8 @@
     </header>
     <!-- End Header -->
 
-    <div class="bg-light">
-        <br> <br> <br>
+    <div style="background-color: #F8F9FA;">
+        <br> <br>
         <main id="main" class="container" style="min-height:66.3vh;">
 
             <div class="row align-content-center justify-content-center" style="margin-top: 5%;">
@@ -66,7 +122,7 @@
 
                     <div class="d-flex align-items-center p-3 my-3 text-white bg-primary rounded shadow justify-content-center">
                         <div class="lh-1">
-                             <h1 align="center" class="h6 mb-0 text-white lh-1">ENSAK FORUM ENTERPRISE ${ pathhh }</h1>
+                             <h1 align="center" class="h6 mb-0 text-white lh-1">ENSAK FORUM ENTERPRISE</h1>
                     <c:choose>
 	                            <c:when test="${ eventState == 0 }">
 	                            <h4 class="text-light"> Event starts in <b id="blockCountdown" class="text-dark" style="display:none"> ${ msUntillStart }</b> </h4>                            	
@@ -93,66 +149,63 @@
                         </div>
 
                     </div>
+                  
                     <div class="row p-0">
                         <div class="col-xl-12 col-lg-12 col-md-12 mb-4">
-                            <div class="card shadow h-100 py-2" style="border-top : 4px solid #1F6DFB">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-
-                                        <div class="col mr-2 justify-content-center">
-                                            <div align="center" style="margin:auto" class="text-xs font-weight-bold text-uppercase mb-1">LOGIN</div>
-                                            <br>
-                                            <div class="h6 mb-0  text-gray-800">
-                                                <form method="post" action="login" class="row g-3 needs-validation">
-                                                    <div class="col-md-12">
-                                                        <input type="text" class="form-control"  placeholder="Username" name="loginL" required>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <br>
-                                                        <input type="password" class="form-control" placeholder="Password" name="passwordL" required>
-                                                        <div class="text-danger mt-2">
-                                                            <c:if test="${ con != null }"><c:out value="${ con }"/></c:if>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <br>
-                                                        <button style="width: 100%;" class="btn btn-primary" type="submit" name="authentify">Login</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
+                            <div class="card">
+                                <div class="card-body mx-4 mt-4">
+                                    <!--Header-->
+                                    <div class="text-center">
+                                        <h3 class="dark-grey-text mb-5">
+                                            <strong> LOG IN </strong>
+                                        </h3>
                                     </div>
+                                    <!--Header-->
+
+                                    <!--Body  method="post" action="login"-->
+                                    <form id="loginform" action="login" method="post">
+                                    <div class="md-form">
+                                        <i class="fas fa-envelope prefix grey-text"></i>
+                                        <input type="text" name="loginL"  id="Form-email4" class="form-control" required>
+                                        <label for="Form-email4">User Name</label>
+                                    </div>
+
+                                    <div class="md-form pb-0">
+                                        <i class="fas fa-lock prefix grey-text"></i>
+                                        <input type="password" name="passwordL"  id="Form-pass4" class="form-control" required>
+                                        <label for="Form-pass4">Password</label>
+                                        <div class="text-danger mt-2">
+                                                            <c:if test="${ con != null }"><c:out value="${ con }"/></c:if>
+										</div>
+                                        <p class="font-small grey-text d-flex justify-content-end">Forgot
+                                            <a href="#" class="dark-grey-text font-weight-bold ml-1"> Password?</a>
+                                        </p>
+                                    </div>
+
+                                    <div class="text-center mb-4">
+                                        <button type="submit" name="authentify" class="btn btn-primary btn-block z-depth-2">Log in</button>
+                                    </div>
+                                    <p class="font-small grey-text d-flex justify-content-center">Don't have an account?
+                                        <a href="${pageContext.request.contextPath}/sign_up" class="dark-grey-text font-weight-bold ml-1"> Sign up</a>
+                                    </p>
+									</form>
                                 </div>
+
                             </div>
                         </div>
 
                     </div>
 
+    <div class="row my-0">
+                    <div class="col-12"> <br>
+                    <p style="opacity : 0.7" class="text-center">  &copy; Copyright <strong>The ENSAK FORUM 2021</strong>. All Rights Reserved </p>
+                    </div>  
+	</div>
                 </div>
             </div>
         </main>
         <br> <br>
     </div>
-
-
-    <!-- End #main -->
-    <footer id="footer">
-        <div class="container">
-            <div class="copyright">
-                &copy; Copyright <strong>TheEvent</strong>. All Rights Reserved
-            </div>
-            <div class="credits">
-                <!--
-            All the links in the footer should remain intact.
-            You can delete the links only if you purchased the pro version.
-            Licensing information: https://bootstrapmade.com/license/
-            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=TheEvent
-          -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-            </div>
-        </div>
-    </footer>
-    <!-- End  Footer -->
 
     <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
 
@@ -171,8 +224,48 @@
     <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
+
+
+<!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
+
     <!-- Template Main JS File -->
     <script src="assets/js/main2.js"></script>
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+    <script>
+    
+     
+    $(document).on("submit", "#loginform", function(event) {
+    	
+        var $form = $(this);
+
+        $.post($form.attr("action"), $form.serialize(), function(data) {
+        	console.log(data);
+        	if(data=="good"){
+        		window.location.href = "${pageContext.request.contextPath}/";
+        	}else{
+        		swal ( "Oops" ,  "Login or Password Incorrect!" ,  "error" );
+        	}
+               	
+        });
+    
+        event.preventDefault(); // Important! Prevents submitting the form.
+    });
+    
+    
+    function goBack(){
+    	window.history.back();
+    }
+    </script>
 </body>
 
 </html>

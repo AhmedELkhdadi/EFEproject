@@ -16,6 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.objdetect.CascadeClassifier;
+
 import beans.Person;
 import beans.Representative;
 import beans.Resume;
@@ -37,11 +43,14 @@ public class WorkshopServlet extends HttpServlet {
 	private MessagesDao messagesDao;
 	private EntrepriseDao entrepriseDao;
 	private ResumeDao resumeDao;
-//	public static final String BANNER_FOLDER = "/assets/img/EnterpriseBanners"; will figure this out when I deploy
-//	public static final String LOGO_FOLDER = "/assets/img/EnterpriseLogos";
-    
+	public final static String BANNER_FOLDER = "/assets/img/EnterpriseBanners";
+	public final static String LOGO_FOLDER = "/assets/img/EnterpriseLogos";
+	public final static String RESUME_FOLDER = "/assets/resumes";
+	
+
     public String bannerUploadPath;
     public String logoUploadPath;
+    public String resumeUploadPath;
     
     public void init() throws ServletException{
     	DaoFactory daoFactory = DaoFactory.getInstance();
@@ -49,8 +58,9 @@ public class WorkshopServlet extends HttpServlet {
     	this.entrepriseDao = daoFactory.getEntreprise();
     	this.messagesDao = daoFactory.getMessages();
     	this.resumeDao = daoFactory.getResume();
-//    	bannerUploadPath = getServletContext().getRealPath( BANNER_FOLDER );
-//    	logoUploadPath = getServletContext().getRealPath( LOGO_FOLDER );
+    	bannerUploadPath = getServletContext().getRealPath( BANNER_FOLDER );
+    	logoUploadPath = getServletContext().getRealPath( LOGO_FOLDER );
+    	resumeUploadPath = getServletContext().getRealPath( RESUME_FOLDER );
         
     }
     
@@ -84,11 +94,12 @@ public class WorkshopServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("message")!=null) {
-				
+			HttpSession S = request.getSession(false);
+			Person user = (Person) S.getAttribute("Connected");
 			if(request.getParameter("responseTo") == null) {
 				int newMsgId = messagesDao.addMessage(request.getParameter("message"), request.getParameter("writer"),
 						request.getParameter("writer_name"), request.getParameter("stand"),
-						null, Integer.parseInt(request.getParameter("privacy")));
+						null, Integer.parseInt(request.getParameter("privacy")),user.getStatus());
 				if(newMsgId != 0) {
 					response.setContentType("text/html;charset=UTF-8");
 					response.getWriter().write(Integer.toString(newMsgId));                              
@@ -100,7 +111,7 @@ public class WorkshopServlet extends HttpServlet {
 			}else {
 				int newMsgId = messagesDao.addMessage(request.getParameter("message"), request.getParameter("writer"),
 						request.getParameter("writer_name"), request.getParameter("stand"),
-						Integer.valueOf(request.getParameter("responseTo")), Integer.parseInt(request.getParameter("privacy")));
+						Integer.valueOf(request.getParameter("responseTo")), Integer.parseInt(request.getParameter("privacy")),user.getStatus());
 				if(newMsgId != 0) {
 					response.setContentType("text/html;charset=UTF-8");
 					response.getWriter().write("ok");
@@ -111,7 +122,7 @@ public class WorkshopServlet extends HttpServlet {
 					}
 				}
 		}
-		if(request.getParameter("submitBanner")!= null) {
+		if(request.getParameter("bannerInput")!= null) {
 			Part filePart = request.getPart("bannerImage");
 			String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 			String format = "";
@@ -122,12 +133,13 @@ public class WorkshopServlet extends HttpServlet {
 			}
 			Representative Rep = (Representative) request.getSession(false).getAttribute("Connected");
 			String newName = Rep.getId() +'.'+ format;
-            String fullPath = "C:/Users/Asus/eclipse-workspace/EFEproject/WebContent/assets/img/EnterpriseBanners/" + newName; //path should change when we deploy
+            String fullPath = bannerUploadPath + "/"+ newName; 
             filePart.write( fullPath );
             entrepriseDao.changeBanner(newName, Rep.getEntreprise().getId()); 
-            response.sendRedirect(request.getContextPath()+"/workshop?Rep="+Rep.getId());
+            response.setContentType("text/html;charset=UTF-8");
+			response.getWriter().write(newName);
 		}
-		if(request.getParameter("submitLogo")!= null) {
+		if(request.getParameter("logoInput")!= null) {
 			Part filePart = request.getPart("logoImage");
 			String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 			String format = "";
@@ -138,10 +150,11 @@ public class WorkshopServlet extends HttpServlet {
 			}
 			Representative Rep = (Representative) request.getSession(false).getAttribute("Connected");
 			String newName = Rep.getId() +'.'+ format;
-			String fullPath = "C:/Users/Asus/eclipse-workspace/EFEproject/WebContent/assets/img/EnterpriseLogos/" + newName; //path should change when we deploy
+			String fullPath = logoUploadPath + "/" + newName; 
 			filePart.write( fullPath );
 			entrepriseDao.changeLogo(newName, Rep.getEntreprise().getId()); 
-			response.sendRedirect(request.getContextPath()+"/workshop?Rep="+Rep.getId());
+			response.setContentType("text/html;charset=UTF-8");
+			response.getWriter().write(newName);
 		}
 		if(request.getParameter("standIdResume")!= null) {
 			Part filePart = request.getPart("paticipantResume");
@@ -158,7 +171,7 @@ public class WorkshopServlet extends HttpServlet {
 				String cvId = ""+ uid;
 				String newName = cvId +'.'+ format;
 				if(resumeDao.addResume(cvId, newName, request.getParameter("standIdResume"), request.getParameter("userIdResume"), request.getParameter("userNameResume"))) {
-					String fullPath = "C:/Users/Asus/eclipse-workspace/EFEproject/WebContent/assets/resumes/" + newName;   //path should change when we deploy
+					String fullPath = resumeUploadPath+ "/" + newName;
 					filePart.write(fullPath);
 					response.setContentType("text/html;charset=UTF-8");
 					response.getWriter().write(newName);
@@ -184,11 +197,11 @@ public class WorkshopServlet extends HttpServlet {
 			}
 			String[] formatsPossible = {"pdf"};
 			if(Arrays.asList(formatsPossible).contains(format)) {
-				File fileToDelete = new File("C:/Users/Asus/eclipse-workspace/EFEproject/WebContent/assets/resumes/"+request.getParameter("pathResumeToChange"));
+				File fileToDelete = new File(resumeUploadPath +"/"+request.getParameter("pathResumeToChange"));
 				if(fileToDelete.delete()) {
 					String newName = request.getParameter("idResumeToChange") +'.'+ format;
 					if(resumeDao.changePath(request.getParameter("idResumeToChange"),newName)) {
-						String fullPath = "C:/Users/Asus/eclipse-workspace/EFEproject/WebContent/assets/resumes/" + newName;   //path should change when we deploy
+						String fullPath = resumeUploadPath +"/" + newName;  
 						filePart.write(fullPath);
 						response.setContentType("text/html;charset=UTF-8");
 						response.getWriter().write(newName);

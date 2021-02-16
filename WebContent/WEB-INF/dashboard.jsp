@@ -71,7 +71,59 @@
     <script src="${pageContext.request.contextPath}/DashboardAssets/js/vendor/modernizr-2.8.3.min.js"></script>
      
 
+ <style>
+          /* Google Font */
+/* latin */
+@font-face {
+font-family: 'Google Sans';
+font-style: normal;
+font-weight: 400;
+src: local('Google Sans Regular'), local(GoogleSans-Regular), url(//fonts.gstatic.com/s/googlesans/v5/4UaGrENHsxJlGDuGo1OIlL3Owp4.woff2) format("woff2");
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+ 
+/* latin */
+@font-face {
+font-family: 'Google Sans';
+font-style: normal;
+font-weight: 500;
+src: local('Google Sans Medium'), local('GoogleSans-Medium'), url(https://fonts.gstatic.com/s/googlesans/v11/4UabrENHsxJlGDuGo1OIlLU94YtzCwY.woff2) format('woff2');
+unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+    
+        body {
+            font-family: Google Sans, sans-serif;
+            height: 100vh;
+        }
+        
+h1,h2,h3,h4,h5,h6 {
+    font-family: Google Sans, sans-serif;
+    font-weight: 400;
+    margin: 0 0 20px 0;
+    padding: 0;
+    color: #0e1b4d;
+}
 
+   /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+    </style>
 
 
 
@@ -705,7 +757,7 @@
                                     <tbody>
                                     	<c:forEach items="${ participants }" var="participant">
                                         <tr>
-                                            <td>${ participant.getName()} ${ participant.getFname()}</td>
+                                            <td class="text-info"><a href="${pageContext.request.contextPath }/participant?id_p=${participant.getId()}" target="blank">${ participant.getFullName() }</a></td>
                                             <td>${ participant.getEmail() }</td>
                                             <td>${ participant.getTel() }</td>
                                             <td>${ participant.getSexe() }</td>
@@ -782,14 +834,20 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
                         <div class="contact-list mg-t-30">
                             <div class="contact-win">
-                                <div class="contact-img">
-                                    <img src="${pageContext.request.contextPath}/DashboardAssets/img/post/1.jpg"
+                                <div>
+                                    <img style="width: 125px;height:125px;border-radius:50%" src="assets/img/participants/${ participant.getImage() }"
                                         alt="" />
                                 </div>
                                 <div class="conct-sc-ic">
-                                    <a class="btn" href="#"><i class="notika-icon notika-facebook"></i></a>
-                                    <a class="btn" href="#"><i class="notika-icon notika-twitter"></i></a>
-                                    <a class="btn" href="#"><i class="notika-icon notika-pinterest"></i></a>
+                                    <a style="background-color : #17A2B8;" class="btn" href="${ participant.getLinkedIn() }" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
+									  <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+									</svg></a>
+                                    <a class="btn" style="background-color : black;"  href="${ participant.getGitHub() }"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+									  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+									</svg></i></a>
+                                    <a class="btn" href="${ participant.getFacebook() }" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+									  <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+									</svg></a>
                                 </div>
                             </div>
                             <div class="contact-ctn">
@@ -801,6 +859,9 @@
                                 <p><span class="text-info ">Academic level:</span> ${ participant.getLevel() }</p>
                                 <p><span class="text-info ">Institution:</span> ${ participant.getInstitution() }</p>
                             </div>
+                        <div class="animation-btn">
+							<a href="${pageContext.request.contextPath }/participant?id_p=${participant.getId()}" ><button class="btn ant-nk-st bounce-ac">More Informations</button></a>
+					    </div>
                         </div>
                     </div>
 					</c:forEach>
@@ -895,11 +956,11 @@
                                                     <button data-toggle="tooltip" data-placement="top"
                                                         title="Accept demand"
                                                         class="approveRep btn btn-sm btn-success success-icon-notika btn-reco-mg btn-button-mg"
-                                                        onclick="showModal('${ resp.getId() }',1)"><i
+                                                        onclick="showModal('${ resp.getId() }','${ resp.getEmail() }',1)"><i
                                                             class="notika-icon notika-checked"></i></button>
                                                     <button
                                                         class="rejectRep btn btn-sm btn-danger danger-icon-notika btn-reco-mg btn-button-mg"
-                                                        onclick="showModal('${ resp.getId() }',0)"
+                                                        onclick="showModal('${ resp.getId() }','${ resp.getEmail() }',0)"
                                                         data-toggle="tooltip" data-placement="top"
                                                         title="Reject demand"><i
                                                             class="notika-icon notika-close"></i></button>
@@ -973,8 +1034,8 @@
                                                 </li>
                                             </ul>
                                         </div> -->
-                                        <button onclick="exportTableToCSV('participants.csv')" data-toggle="tooltip"
-                                            data-placement="left" title="Download Report" class="btn"><i
+                                        <button id="btnExportBarCharts" data-toggle="tooltip"
+                                            data-placement="left" title="Export to PDF" class="btn"><i
                                                 class="notika-icon notika-sent"></i></button>
                                     </div>
                                 </div>
@@ -988,7 +1049,7 @@
 
         <!-- Bar Chart area End-->
         <div class="bar-chart-area">
-            <div class="container">
+            <div  id="allBarCharts" class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <div class="bar-chart-wp">
@@ -1059,8 +1120,8 @@
                                                 </li>
                                             </ul>
                                         </div> -->
-                                        <button onclick="exportTableToCSV('participants.csv')" data-toggle="tooltip"
-                                            data-placement="left" title="Download Report" class="btn"><i
+                                        <button onclick="exportChartsToPDF('')" data-toggle="tooltip"
+                                            data-placement="left" title="Export to PDF" class="btn btn-danger"><i
                                                 class="notika-icon notika-sent"></i></button>
                                     </div>
                                 </div>
@@ -1500,13 +1561,15 @@
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-bottom:10px">
                         <div class="animation-single-int">
                             <div class="animation-ctn-hd d-flex">
-	                         <h2>${ resp.getEntreprise().getName()}</h2>
-	                         <img src="${pageContext.request.contextPath}/assets/img/EnterpriseLogos/${resp.getEntreprise().getLogo()}" alt="Image" 
-	                         style="height:100px;width:100px;"> 
+                            <div style="display : flex; align-items: center; justify-content : space-between; ">
+                            <h2 class="font-weight-bold" style="float : right; clear : both;">${ resp.getEntreprise().getName()}</h2>
+	                         <img style="float : left; clear : both; height:100px;width:100px;" src="${pageContext.request.contextPath}/assets/img/EnterpriseLogos/${resp.getEntreprise().getLogo()}" alt="Image" > 
+                        </div>
+	                         
                             </div>
                             <div class="animation-img mg-b-15">
                               <img class="animate-one"
-                                    src="${pageContext.request.contextPath}/assets/img/EnterpriseBanners/${resp.getEntreprise().getBannerImage()}" alt="" />
+                                    src="${pageContext.request.contextPath}/assets/img/EnterpriseBanners/${resp.getEntreprise().getBannerImage()}" alt="" style="height:90px;width:100%;" />
                             </div>
 
 	                         <p>Representative: <strong class="text-danger"> <i> ${ resp.getName() } ${ resp.getFname() } </i></strong></p>
@@ -1620,11 +1683,36 @@
 		============================================ -->
     <script src="${pageContext.request.contextPath}/DashboardAssets/js/vendor/jquery-1.12.4.min.js"></script>
     <script>
+    
+    
+  
+    
+    
     function random_rgba() {
         var o = Math.round, r = Math.random, s = 255;
         /*  return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')'; */
          return 'rgba(' + 220 + ',' + o(r()*s) + ',' + o(r()*s) + ',' + 0.65 + ')'; 
     }
+    
+    let colors=['rgba(255, 99, 132, 0.2)',
+        'rgb(50,205,50, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(255, 206, 86, 0.2)']
+    
+    let borderColors=['rgba(255, 99, 132, 0.8)',
+        'rgb(50,205,50, 0.8)',
+        'rgba(255, 206, 86, 0.8)',
+        'rgba(75, 192, 192, 0.8)',
+        'rgba(255, 206, 86, 0.8)',
+        'rgba(255, 206, 86, 0.8)',
+        'rgba(255, 206, 86, 0.8)',
+        'rgba(255, 206, 86, 0.8)',
+        'rgba(255, 206, 86, 0.8)']
 
     
     $("#btn_descriptive_charts , #btn_descriptive_charts1").click(function() {
@@ -1636,7 +1724,7 @@
         $("#compose_mail").fadeOut(500);
         $("#mails").fadeOut(500);
 
-
+        
         /*----------------------------------------*/
         /*  1.  Gender of participants
         /*----------------------------------------*/
@@ -1649,9 +1737,11 @@
         var genders = Object.keys(genderStats)
         var genderNumbers = []
         var colors_gender = []
+        var colors_gender_border = []
         for( let i = 0; i<genders.length ; i++ ){
         	genderNumbers[i] = genderStats[genders[i]]
-        	colors_gender[i] = random_rgba()
+        	colors_gender[i] = colors[i];
+        	colors_gender_border[i] = borderColors[i];
         }
      
         var barchart1 = new Chart(ctx, {
@@ -1662,7 +1752,7 @@
                     label: 'Gender of participants',
                     data: genderNumbers,
                     backgroundColor: colors_gender,
-                    borderColor: colors_gender,
+                    borderColor: colors_gender_border,
                     borderWidth: 1
                 }]
             },
@@ -1686,9 +1776,11 @@
         var levels = Object.keys(levelStats)
         var levelNumbers = []
         var colorLevels = []
+        var colorLevelsBorder = []
         for( let i = 0; i<levels.length ; i++ ){
         	levelNumbers[i] = levelStats[levels[i]]
-        	colorLevels[i] = random_rgba()
+        	colorLevels[i] = colors[i];
+        	colorLevelsBorder[i] = borderColors[i];
         }
         var barchart2 = new Chart(ctx, {
             type: 'bar',
@@ -1699,7 +1791,7 @@
                     data: levelNumbers,
                     borderWidth: 1,
                     backgroundColor: colorLevels,
-                    borderColor: colorLevels,
+                    borderColor: colorLevelsBorder,
                     borderWidth: 1
                 }]
             },
@@ -1721,9 +1813,11 @@
         var institutions = Object.keys(instStats)
         var instNumbers = []
         var colorInsts = []
+        var colorInstsBorder = []
         for( let i = 0; i<institutions.length ; i++ ){
         	instNumbers[i] = instStats[institutions[i]]
-        	colorInsts[i] = random_rgba()
+        	colorInsts[i] = colors[i];
+        	colorInstsBorder[i] = borderColors[i];
         }
         var barchart2 = new Chart(ctx, {
             type: 'bar',
@@ -1734,7 +1828,7 @@
                     data: instNumbers,
                     borderWidth: 1,
                     backgroundColor: colorInsts,
-                    borderColor: colorInsts,
+                    borderColor: colorInstsBorder,
                     borderWidth: 1
                 }]
             },
@@ -1757,9 +1851,11 @@
         var stands = Object.keys(resumeStats)
         var resumeNumbers = []
         var colorStands = []
+        var colorStandsBorder = []
         for( let i = 0; i<stands.length ; i++ ){
         	resumeNumbers[i] = resumeStats[stands[i]]
-        	colorStands[i] = random_rgba()
+        	colorStands[i] = colors[i];
+        	colorStandsBorder[i] = borderColors[i];
         }
         var barchart4 = new Chart(ctx, {
         	type: 'bar',
@@ -1770,7 +1866,7 @@
                     data: resumeNumbers,
                     borderWidth: 1,
                     backgroundColor: colorStands,
-                    borderColor: colorStands,
+                    borderColor: colorStandsBorder,
                     borderWidth: 1
                 }]
             },
@@ -1793,9 +1889,11 @@
         var stands = Object.keys(messagesStats)
         var msgsNumbers = []
         var colorStands = []
+        var colorStandsBorder = []
         for( let i = 0; i<stands.length ; i++ ){
         	msgsNumbers[i] = messagesStats[stands[i]]
-        	colorStands[i] = random_rgba()
+        	colorStands[i] = colors[i];
+        	colorStandsBorder[i] = borderColors[i];
         }
         var barchart4 = new Chart(ctx, {
         	type: 'bar',
@@ -1806,7 +1904,7 @@
                     data: msgsNumbers,
                     borderWidth: 1,
                     backgroundColor: colorStands,
-                    borderColor: colorStands,
+                    borderColor: colorStandsBorder,
                     borderWidth: 1
                 }]
             },
@@ -1823,6 +1921,24 @@
 
         $("#descriptive_charts").fadeIn(1000);
     });
+    
+  
+    $("#btnExportBarCharts").click(function() {
+        html2canvas($('#allBarCharts')[0], {
+            onrendered: function(canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download("BarCharts.pdf");
+            }
+        });
+    });
+    
+    
     </script>
     <!-- bootstrap JS
 		============================================ -->
@@ -1921,6 +2037,14 @@
     <!-- My JS code
 		============================================ -->
     <script src="${pageContext.request.contextPath}/DashboardAssets/js/mycode.js"></script>
+    
+     <!-- Convert to PDF links JS -->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+   
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </body>
 
