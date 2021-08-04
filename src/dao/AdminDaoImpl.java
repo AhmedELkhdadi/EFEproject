@@ -10,33 +10,34 @@ import beans.Admin;
 
 public class AdminDaoImpl implements AdminDao {
 	private DaoFactory daoFactory;
-	
-	AdminDaoImpl(DaoFactory daoFactory){
+
+	AdminDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
-	
-	public boolean authentify(Admin admin) {
+
+	public boolean authenticate(Admin admin) {
 		Connection conn = null;
 		Statement query = null;
 
 		String log = admin.getLogin();
 		String pw = admin.getPassword();
-		
+
 		try {
-			conn= daoFactory.getConnection();
+			conn = daoFactory.getConnection();
 			query = conn.createStatement();
-			ResultSet result = query.executeQuery("SELECT * FROM admin WHERE login='"+log+"' AND password='"+pw+"';");
-			if(result.next() == false)
+			ResultSet result = query
+					.executeQuery("SELECT * FROM admin WHERE login='" + log + "' AND password='" + pw + "';");
+			if (result.next() == false)
 				return false;
 			else {
-				admin.setId(result.getString("id_a")); 
+				admin.setId(result.getString("id_a"));
 				admin.setName(result.getString("name"));
 				admin.setFname(result.getString("fname"));
 				admin.setEmail(result.getString("email"));
 				admin.setTel(result.getString("phone"));
 				admin.setStatus(1);
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -50,15 +51,17 @@ public class AdminDaoImpl implements AdminDao {
 		try {
 			conn = daoFactory.getConnection();
 			query = conn.createStatement();
-			ResultSet res = query.executeQuery("Select count(*) as count FROM admin,participants,representatives WHERE '"+login+"' IN (admin.login,participants.login,representatives.login );");
-			if(res.next()) {
-				if(res.getInt("count") == 0)
+			ResultSet res = query
+					.executeQuery("Select count(*) as count FROM admin,participants,representatives WHERE '" + login
+							+ "' IN (admin.login,participants.login,representatives.login );");
+			if (res.next()) {
+				if (res.getInt("count") == 0)
 					return false;
-				else 
-					return true;}
-			else 
+				else
+					return true;
+			} else
 				return false;
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			return false;
 		}
 	}
